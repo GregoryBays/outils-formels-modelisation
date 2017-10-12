@@ -4,14 +4,14 @@ import TaskManagerLib
 // Exercice 3
 print("Exercice 3")
 let taskManager = createTaskManager()
-let create = taskManager.transitions.first{$0.name == "create"}
-let spawn = taskManager.transitions.first{$0.name == "spawn"}
-let exec = taskManager.transitions.first{$0.name == "exec"}
-let success = taskManager.transitions.first{$0.name == "success"}
-let fail = taskManager.transitions.first{$0.name == "fail"}
-let taskPool = taskManager.places.first{$0.name == "taskPool"}
-let processPool = taskManager.places.first{$0.name == "processPool"}
-let inProgress = taskManager.places.first{$0.name == "inProgress"}
+let create = taskManager.transitions.first{$0.name == "create"}!
+let spawn = taskManager.transitions.first{$0.name == "spawn"}!
+let exec = taskManager.transitions.first{$0.name == "exec"}!
+let success = taskManager.transitions.first{$0.name == "success"}!
+let fail = taskManager.transitions.first{$0.name == "fail"}!
+let taskPool = taskManager.places.first{$0.name == "taskPool"}!
+let processPool = taskManager.places.first{$0.name == "processPool"}!
+let inProgress = taskManager.places.first{$0.name == "inProgress"}!
 
 let m1 = create.fire(from: [taskPool: 0, processPool: 0, inProgress: 0])
 print("m1 (create) ",m1!)
@@ -31,15 +31,15 @@ print("m6 (success) ",m6!)
 //Exercice 4
 print("Exercice 4: Correct TaskManager")
 let correctTaskManager = createCorrectTaskManager()
-let create2 = correctTaskManager.transitions.first{$0.name == "create"}
-let spawn2 = correctTaskManager.transitions.first{$0.name == "spawn"}
-let exec2 = correctTaskManager.transitions.first{$0.name == "exec"}
-let success2 = correctTaskManager.transitions.first{$0.name == "success"}
-let fail2 = correctTaskManager.transitions.first{$0.name == "fail"}
-let taskPool2 = correctTaskManager.places.first{$0.name == "taskPool"}
-let processPool2 = correctTaskManager.places.first{$0.name == "processPool"}
-let inProgress2 = correctTaskManager.places.first{$0.name == "inProgress"}
-let buffer = correctTaskManager.places.first{$0.name == "buffer"}
+let create2 = correctTaskManager.transitions.first{$0.name == "create"}!
+let spawn2 = correctTaskManager.transitions.first{$0.name == "spawn"}!
+let exec2 = correctTaskManager.transitions.first{$0.name == "exec"}!
+let success2 = correctTaskManager.transitions.first{$0.name == "success"}!
+let fail2 = correctTaskManager.transitions.first{$0.name == "fail"}!
+let taskPool2 = correctTaskManager.places.first{$0.name == "taskPool"}!
+let processPool2 = correctTaskManager.places.first{$0.name == "processPool"}!
+let inProgress2 = correctTaskManager.places.first{$0.name == "inProgress"}!
+let buffer = correctTaskManager.places.first{$0.name == "buffer"}!
 
 let m21 = create2.fire(from: [taskPool2: 0, processPool2: 0, inProgress2: 0, buffer: 0])
 print("m1 (create) ",m21!)
