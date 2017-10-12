@@ -1,6 +1,6 @@
 import TaskManagerLib
 
-
+//Grégory Bays
 // Exercice 3
 print("Exercice 3")
 let taskManager = createTaskManager()
@@ -26,7 +26,6 @@ print("m5 (exec)",m5!)
 let m6 = success.fire(from: m5!)
 print("m6 (success) ",m6!)
 //Il reste un Token dans processpool que l'on ne peut pas enlever malgrés que l'exécution ai été un succès
-
 
 //Exercice 4
 print("Exercice 4: Correct TaskManager")

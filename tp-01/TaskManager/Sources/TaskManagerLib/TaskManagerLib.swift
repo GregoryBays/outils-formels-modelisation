@@ -1,5 +1,5 @@
 import PetriKit
-
+//Grégory Bays
 public func createTaskManager() -> PTNet {
     // Places
     let taskPool    = PTPlace(named: "taskPool")
@@ -60,7 +60,7 @@ public func createCorrectTaskManager() -> PTNet {
         named          : "fail",
         preconditions  : [PTArc(place: inProgress)],
       postconditions : [PTArc(place: buffer)])
-    //La nouvelle place est buffer
+    //La nouvelle place est buffer qui fait en sorte qu'une tâche ne peut pas être asigné à deux processus 
     // P/T-net
     return PTNet(
         places: [taskPool, processPool, inProgress, buffer],
