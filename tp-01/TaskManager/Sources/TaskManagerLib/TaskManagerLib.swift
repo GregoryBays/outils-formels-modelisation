@@ -40,12 +40,11 @@ public func createCorrectTaskManager() -> PTNet {
     let taskPool    = PTPlace(named: "taskPool")
     let processPool = PTPlace(named: "processPool")
     let inProgress  = PTPlace(named: "inProgress")
-    let complement = PTPlace(named: "complement") // Ajout d'une nouvelle place
-    // Transitions
+    let buffer = PTPlace(named: "buffer")
     let create      = PTTransition(
         named          : "create",
         preconditions  : [],
-        postconditions : [PTArc(place: taskPool), PTArc(place: complement)])
+        postconditions : [PTArc(place: taskPool), PTArc(place: buffer)])
     let spawn       = PTTransition(
         named          : "spawn",
         preconditions  : [],
@@ -56,15 +55,15 @@ public func createCorrectTaskManager() -> PTNet {
         postconditions : [])
     let exec       = PTTransition(
         named          : "exec",
-        preconditions  : [PTArc(place: taskPool), PTArc(place: processPool), PTArc(place: complement)],
+        preconditions  : [PTArc(place: taskPool), PTArc(place: processPool), PTArc(place: buffer)],
         postconditions : [PTArc(place: taskPool), PTArc(place: inProgress)])
     let fail        = PTTransition(
         named          : "fail",
         preconditions  : [PTArc(place: inProgress)],
-      postconditions : [PTArc(place: complement)])
-    // On link la nouvelle à create (en postconditions), exec (en preconditions) et fail (en postconditions)
+      postconditions : [PTArc(place: buffer)])
+    //La nouvelle place est
     // P/T-net
     return PTNet(
-        places: [taskPool, processPool, inProgress, complement],
+        places: [taskPool, processPool, inProgress, buffer],
         transitions: [create, spawn, success, exec, fail])
 }
