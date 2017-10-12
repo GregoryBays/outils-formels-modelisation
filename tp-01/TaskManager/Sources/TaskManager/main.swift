@@ -41,15 +41,16 @@ let processPool2 = correctTaskManager.places.first{$0.name == "processPool"}!
 let inProgress2 = correctTaskManager.places.first{$0.name == "inProgress"}!
 let buffer = correctTaskManager.places.first{$0.name == "buffer"}!
 
-let m21 = create2.fire(from: [taskPool2: 0, processPool2: 0, inProgress2: 0, buffer: 0])
-print("m1 (create) ",m21!)
-let m22 = spawn2.fire(from: m21!)
-print("m2 (spawn) ",m22!)
-let m23 = spawn2.fire(from: m22!)
-print("m3 (spawn)",m23!)
-let m24 = exec2.fire(from: m23!)
-print("m4 (exec) ",m24!)
-let m25 = success2.fire(from: m24!)
-print("m5 (success) ",m25!)
-let m27 = fail2.fire(from: m24!)
-print("m5 (fail) ",m27!)
+let m11 = create2.fire(from: [taskPool2: 0, processPool2: 0, inProgress2: 0, buffer: 0])
+print("m1 (create) ",m11!)
+let m12 = spawn2.fire(from: m11!)
+print("m2 (spawn) ",m12!)
+let m13 = spawn2.fire(from: m12!)
+print("m3 (spawn)",m13!)
+let m14 = exec2.fire(from: m13!)
+print("m4 (exec) ",m14!)
+let m15 = success2.fire(from: m14!)
+print("m5 (success) ",m15!)
+//on relance un fail depuis m14
+let m16 = fail2.fire(from: m14!)
+print("m5 (fail) ",m16!)

@@ -5,7 +5,6 @@ public func createTaskManager() -> PTNet {
     let taskPool    = PTPlace(named: "taskPool")
     let processPool = PTPlace(named: "processPool")
     let inProgress  = PTPlace(named: "inProgress")
-
     // Transitions
     let create      = PTTransition(
         named          : "create",
@@ -40,7 +39,7 @@ public func createCorrectTaskManager() -> PTNet {
     let taskPool    = PTPlace(named: "taskPool")
     let processPool = PTPlace(named: "processPool")
     let inProgress  = PTPlace(named: "inProgress")
-    let buffer = PTPlace(named: "buffer")
+    let buffer      = PTPlace(named: "buffer")
     let create      = PTTransition(
         named          : "create",
         preconditions  : [],
@@ -61,7 +60,7 @@ public func createCorrectTaskManager() -> PTNet {
         named          : "fail",
         preconditions  : [PTArc(place: inProgress)],
       postconditions : [PTArc(place: buffer)])
-    //La nouvelle place est
+    //La nouvelle place est buffer
     // P/T-net
     return PTNet(
         places: [taskPool, processPool, inProgress, buffer],
