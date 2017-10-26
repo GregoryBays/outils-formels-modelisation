@@ -15,45 +15,152 @@ public class MarkingGraph {
 public extension PTNet {
 
     public func markingGraph(from marking: PTMarking) -> MarkingGraph? {
-
         // Write here the implementation of the marking graph generation.
 
-        let m0:MarkingGraph = MarkingGraph(marking: marking)
+        let transitions = self.transitions
 
-        var NodeVisited:[MarkingGraph] = [m0]
+        let initNode = MarkingGraph(marking: marking)
 
-        var ToVisit:[MarkingGraph] = [m0]
+        var needtovisit = [MarkingGraph]()
 
-        while let actu = ToVisit.popLast(){
+        var visited = [MarkingGraph]()
 
-          NodeVisited.append(actu)
+        needtovisit.append(initNode)
 
-          for tran in transitions{
+        while needtovisit.count != 0 {
 
-            if let firedTran = tran.fire(from: actu.marking){
+            let actu = needtovisit.removeFirst()
 
-              if let visited = NodeVisited.first(where: {$0.marking == firedTran}){
+            visited.append(actu)
 
-                actu.successors[tran] = visited
+            transitions.forEach { trans in
 
-              } else{
+              if let newMark = trans.fire(from: actu.marking) {
 
-                let temp:MarkingGraph = MarkingGraph(marking: firedTran)
+                        if let alreadyVisited = visited.first(where: { $0.marking == newMark }) {
 
-                if !NodeVisited.contains{$0 === temp}{
+                            actu.successors[trans] = alreadyVisited
 
-                  actu.successors[tran] = temp
+                        } else {
 
-                  ToVisit.append(temp)
+                            let discovered = MarkingGraph(marking: newMark)
+
+                            actu.successors[trans] = discovered
+
+                            if (!needtovisit.contains(where: { $0.marking == discovered.marking})) {
+
+                                needtovisit.append(discovered)
+                            }
+                    }
                 }
-              }
             }
-          }
         }
 
-        print("\(NodeVisited)")
+        return initNode
+    }
 
-        return m0
+
+    /*
+      Retourne le nombre de nœuds
+    */
+
+    public func count (mark: MarkingGraph) -> Int{
+
+      var checked = [MarkingGraph]()
+
+      var tocheck = [MarkingGraph]()
+
+      tocheck.append(mark)
+
+      while let actu = tocheck.popLast() {
+
+        checked.append(actu)
+
+        for(_, successor) in actu.successors{
+
+          if !checked.contains(where: {$0 === successor}) && !tocheck.contains(where: {$0 === successor}){
+
+              tocheck.append(successor)
+            }
+          }
+      }
+      return checked.count
+    }
+
+    /*
+      retourne true si il y a deux fumeurs
+    */
+
+    public func moresmokers (mark: MarkingGraph) -> Bool {
+
+      var checked = [MarkingGraph]()
+
+      var tocheck = [MarkingGraph]()
+
+      tocheck.append(mark)
+
+      while let actu = tocheck.popLast() {
+
+        checked.append(actu)
+
+        var nbSmoke = 0;
+
+        for (key, value) in actu.marking {
+
+            if (key.name == "s1" || key.name == "s2" || key.name == "s3"){
+
+               nbSmoke += Int(value)
+            }
+        }
+        if (nbSmoke > 1) {
+
+          return true
+        }
+        for(_, successor) in actu.successors{
+
+          if !checked.contains(where: {$0 === successor}) && !tocheck.contains(where: {$0 === successor}){
+
+              tocheck.append(successor)
+            }
+          }
+      }
+      return false
+    }
+    /*
+      Check les ingrédients sur la table
+    */
+
+    public func twosame (mark: MarkingGraph) -> Bool {
+
+      var checked = [MarkingGraph]()
+
+      var tocheck = [MarkingGraph]()
+
+      tocheck.append(mark)
+
+      while let actu = tocheck.popLast() {
+
+        checked.append(actu)
+
+        for (key, value) in actu.marking {
+
+            if (key.name == "p" || key.name == "t" || key.name == "m"){
+
+               if(value > 1){
+
+                 return true
+               }
+            }
+        }
+        for(_, successor) in actu.successors{
+
+          if !checked.contains(where: {$0 === successor}) && !tocheck.contains(where: {$0 === successor}){
+
+              tocheck.append(successor)
+            }
+          }
+      }
+      return false
     }
 
 }
