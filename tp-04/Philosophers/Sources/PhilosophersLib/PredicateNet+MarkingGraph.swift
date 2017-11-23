@@ -16,7 +16,7 @@ extension PredicateNet {
 
 
        let initmark = PredicateMarkingNode<T>(marking: marking)
-       var ntv: [PredicateMarkingNode<T>] = [initmark]
+       var ntv: [PredicateMarkingNode<T>] = [initmark] //node to visit = ntv
 
        // visit toute la liste
        while(!ntv.isEmpty){
@@ -24,7 +24,7 @@ extension PredicateNet {
            let curent = ntv.popLast()!
 
            // Boucle les transitions
-           for tran in transitions
+           for tran in transitions{
              curent.successors[tran] = [:]
 
              // lancement des bindings
@@ -48,7 +48,7 @@ extension PredicateNet {
                {
                 //les successor
                    curent.successors[tran]![bind] = knownMarking
-               }else if(!ntv.contains(where: { PredicateNet.equals($0.marking, newMarking.marking) })) {                   
+               }else if(!ntv.contains(where: { PredicateNet.equals($0.marking, newMarking.marking) })) {
                    ntv.append(newMarking)
                    curent.successors[tran]![bind] = newMarking
                }
