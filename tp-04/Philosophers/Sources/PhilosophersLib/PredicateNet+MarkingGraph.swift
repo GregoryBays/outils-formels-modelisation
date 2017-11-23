@@ -2,19 +2,62 @@ extension PredicateNet {
 
     /// Returns the marking graph of a bounded predicate net.
     public func markingGraph(from marking: MarkingType) -> PredicateMarkingNode<T>? {
-        // Write your code here ...
 
-        // Note that I created the two static methods `equals(_:_:)` and `greater(_:_:)` to help
-        // you compare predicate markings. You can use them as the following:
-        //
-        //     PredicateNet.equals(someMarking, someOtherMarking)
-        //     PredicateNet.greater(someMarking, someOtherMarking)
-        //
-        // You may use these methods to check if you've already visited a marking, or if the model
-        // is unbounded.
+    // Write your code here ...
 
-        return nil
-    }
+       // Note that I created the two static methods `equals(_:_:)` and `greater(_:_:)` to help
+       // you compare predicate markings. You can use them as the following:
+       //
+       //     PredicateNet.equals(someMarking, someOtherMarking)
+       //     PredicateNet.greater(someMarking, someOtherMarking)
+       //
+       // You may use these methods to check if you've already visited a marking, or if the model
+       // is unbounded.
+
+
+       let initmark = PredicateMarkingNode<T>(marking: marking)
+       var ntv: [PredicateMarkingNode<T>] = [initmark]
+
+       // visit toute la liste
+       while(!ntv.isEmpty){
+
+           let curent = ntv.popLast()!
+
+           // Boucle les transitions
+           for tran in transitions
+             curent.successors[tran] = [:]
+
+             // lancement des bindings
+             let binding: [PredicateTransition<T>.Binding] = tran.fireableBingings(from: curent.marking)
+             for bind in binding{
+
+               //transitions
+               let newMarking = PredicateMarkingNode(marking: tran.fire(from: curent.marking, with:bind)!)
+               for a in initmark{
+
+                   // comparer les marquages
+                   if (PredicateNet.greater(newMarking.marking, a.marking))
+                   {
+                       // On retourne nil
+                       return nil
+                   }
+               }
+
+               // check les marquages
+               if let knownMarking = initmark.first(where:{PredicateNet.equals($0.marking, newMarking.marking)})
+               {
+                //les successor
+                   curent.successors[tran]![bind] = knownMarking
+               }else if(!ntv.contains(where: { PredicateNet.equals($0.marking, newMarking.marking) })) {                   
+                   ntv.append(newMarking)
+                   curent.successors[tran]![bind] = newMarking
+               }
+             }
+           }
+       }
+
+       return initmark
+}
 
     // MARK: Internals
 
