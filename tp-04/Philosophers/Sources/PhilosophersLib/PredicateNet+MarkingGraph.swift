@@ -37,8 +37,7 @@ extension PredicateNet {
 
                    // comparer les marquages
                    if (PredicateNet.greater(newMarking.marking, a.marking))
-                   {
-                       // On retourne nil
+                   {                    
                        return nil
                    }
                }
