@@ -1,7 +1,7 @@
 import PetriKit
 
 public extension PTNet {
-    
+
     public func coverabilityToPTMarking(with marking : CoverabilityMarking, and p : [PTPlace]) -> PTMarking{
       var m : PTMarking = [:]
 
@@ -76,13 +76,19 @@ public extension PTNet {
     public func coverabilityGraph(from marking0: CoverabilityMarking) -> CoverabilityGraph? {
 
         var transitionsC = Array (transitions) // sort les valeurs de l'array
+
         transitionsC.sort{$0.name < $1.name}
+
         let placesC = Array(places)
 
         var markingList : [CoverabilityMarking] = [marking0]
+
         var graphList : [CoverabilityGraph] = []
+
         var this: CoverabilityMarking
+
         let returnedGraph = CoverabilityGraph(marking: marking0, successors: [:])
+
         var count = 0
 
         while(count < markingList.count)
