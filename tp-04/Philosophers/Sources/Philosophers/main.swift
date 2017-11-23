@@ -50,3 +50,29 @@ do {
         print(m)
     }
 }
+
+
+//Q1
+do{
+  let philosophers = lockFreePhilosophers(n: 5)
+  let graph = philosophers.markingGraph(from: philosophers.initialMarking!)
+  print("Marquage non bloquable : \(graph!.count)")
+}
+
+
+//Q2
+do{
+  let philosophers = lockablePhilosophers(n: 5)
+  let graph = philosophers.markingGraph(from: philosophers.initialMarking!)
+  print("Marquage bloquable \(graph!.count)")
+}
+
+
+//Q3 
+do {
+  let philosophers = lockablePhilosophers(n: 5)
+  let graph = philosophers.markingGraph(from: philosophers.initialMarking!)
+  for g in graph! {
+    print("\(g.marking)")
+  }
+}
