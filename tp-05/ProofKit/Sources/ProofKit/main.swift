@@ -2,9 +2,19 @@ import ProofKitLib
 
 let a: Formula = "a"
 let b: Formula = "b"
-let f = a && b
-
-print(f)
+let c: Formula = "c"
+let f = !(a && (b || c))
+let g = ( a => b ) || !(a && c)
+let h = (!a || b && c) && a
+print("1.")
+print(f.nnf)
+print("2.")
+print(g.nnf)
+print("3.")
+print(h.nnf)
+// cnf ex1 (!a || !b) && (!a || !c) dnf  = nnf
+// cnf ex2 (!a || b || !c ) = dnf
+// cnf ex3 (photo)
 
 let booleanEvaluation = f.eval { (proposition) -> Bool in
     switch proposition {

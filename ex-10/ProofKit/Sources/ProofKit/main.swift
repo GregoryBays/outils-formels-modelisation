@@ -2,9 +2,16 @@ import ProofKitLib
 
 let a: Formula = "a"
 let b: Formula = "b"
+let c: Formula = "c"
+let d: Formula = "d"
 let f = a && b
-
-print(f)
+let j = (a || b) |- ( a || c ) || ( b&&c) || !c
+let g = (a => b && a => c && b => d && c => d ) |- a => d
+print(g.isProvable)
+print(g)
+//print(j.isProvable)
+//print(j)
+//print(f)
 
 let booleanEvaluation = f.eval { (proposition) -> Bool in
     switch proposition {
