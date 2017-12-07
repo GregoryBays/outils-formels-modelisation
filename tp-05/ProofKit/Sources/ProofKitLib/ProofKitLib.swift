@@ -69,18 +69,70 @@ public enum Formula {
             return (!b).nnf || c.nnf
         }
     }
-
-    /// The disjunctive normal form of the formula.
+    //on chercher le DNF en partant du NNF
     public var dnf: Formula {
-        // Write your code here ...
-        return self
+    switch self.nnf {
+    case .proposition(_):
+        return self.nnf
+
+    case .negation(_):
+        return self.nnf
+
+    case .disjunction(let a, let b):
+        return a.dnf || b.dnf
+
+    case .conjunction(let a, let b):
+        switch a.dnf {
+        case .disjunction(let c, let d):
+            return (b && d).dnf || (b && c).dnf
+
+        default: break
+        }
+        switch b.dnf {
+        case .disjunction(let c, let d):
+            return (c && a).dnf || (d && a).dnf
+        default: break
+        }
+
+        return self.cnf
+
+    case .implication(_,_):
+        return self.nnf
     }
 
-    /// The conjunctive normal form of the formula.
+}
     public var cnf: Formula {
-        // Write your code here ...
-        return self
-    }
+          // on part du NNF et eon cherche le CNF
+          switch self.nnf {
+          case .proposition(_):
+              return self.nnf
+
+          case .negation(_):
+              return self.nnf
+
+          case .conjunction(let a, let b):
+              return a.cnf && b.cnf
+
+          case .disjunction(let a, let b):
+              switch a.cnf {
+              case .conjunction(let c, let d):
+                  return (b || c).cnf && (b || d).cnf
+
+              default: break
+              }
+              switch b.cnf {
+              case .conjunction(let c, let d):
+                  return (a || c).cnf && (a||d).cnf
+
+              default: break
+              }
+              return self.dnf
+
+          case .implication(_,_):
+              return self.nnf
+
+          }
+  }
 
     /// The propositions the formula is based on.
     ///
@@ -100,7 +152,20 @@ public enum Formula {
         case .implication(let a, let b):
             return a.propositions.union(b.propositions)
         }
-    }
+    }  /// Evaluates the formula, with a given valuation of its propositions.
+    ///
+    ///     let f: Formula = (.proposition("p") || .proposition("q"))
+    ///     let value = f.eval { (proposition) -> Bool in
+    ///         switch proposition {
+    ///         case "p": return true
+    ///         case "q": return false
+    ///         default : return false
+    ///         }
+    ///     })
+    ///     // 'value' == true
+    ///
+    /// - Warning: The provided valuation should be defined for each proposition name the formula
+    ///   contains. A call to `eval` might fail with an unrecoverable error otherwise.
 
     /// Evaluates the formula, with a given valuation of its propositions.
     ///
